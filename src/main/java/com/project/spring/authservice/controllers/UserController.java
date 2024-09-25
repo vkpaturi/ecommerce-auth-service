@@ -1,8 +1,10 @@
 package com.project.spring.authservice.controllers;
 
 import com.project.spring.authservice.dtos.LoginRequestDTO;
+import com.project.spring.authservice.dtos.LogoutRequestDTO;
 import com.project.spring.authservice.dtos.SignUpRequestDTO;
 import com.project.spring.authservice.exceptions.UserNotFoundException;
+import com.project.spring.authservice.models.Token;
 import com.project.spring.authservice.models.User;
 import com.project.spring.authservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +32,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LoginRequestDTO loginRequestDTO) throws UserNotFoundException {
+    public ResponseEntity<Token> login(@RequestBody LoginRequestDTO loginRequestDTO) throws UserNotFoundException {
         return ResponseEntity.ok(userService.login(loginRequestDTO.getEmail(), loginRequestDTO.getPassword()));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(){
-        return null;
+    public ResponseEntity<Void> logout(@RequestBody LogoutRequestDTO logoutRequestDTO) throws Exception {
+        userService.logout(logoutRequestDTO.getTokenValue());
+        return ResponseEntity.ok().build();
     }
 
 }
