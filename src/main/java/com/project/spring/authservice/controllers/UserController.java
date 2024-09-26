@@ -9,10 +9,7 @@ import com.project.spring.authservice.models.User;
 import com.project.spring.authservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -40,6 +37,11 @@ public class UserController {
     public ResponseEntity<Void> logout(@RequestBody LogoutRequestDTO logoutRequestDTO) throws Exception {
         userService.logout(logoutRequestDTO.getTokenValue());
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/validate/{token}")
+    public User validateToken(@PathVariable String token) throws Exception {
+        return userService.validateToken(token);
     }
 
 }

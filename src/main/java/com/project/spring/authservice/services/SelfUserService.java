@@ -65,12 +65,24 @@ public class SelfUserService implements UserService {
 
     @Override
     public void logout(String token) throws Exception {
-        Optional<Token> tokenOptional = tokenRepository.findByTokenValue(token);
+        Optional<Token> tokenOptional = tokenRepository.findByTokenValueAndDeleted(token, false);
         if (tokenOptional.isEmpty()) {
             throw new Exception("Token does not exists");
         }
         Token existingToken = tokenOptional.get();
         existingToken.setDeleted(true);
         tokenRepository.save(existingToken);
+    }
+
+    @Override
+    public User validateToken(String token) throws Exception {
+
+        Optional<Token> tkn = tokenRepository.
+                findByTokenValueAndDeletedEqualsAndExpiryDateGreaterThan(token, false, new Date());
+
+        if (tkn.isEmpty()) {
+            throw new Exception("User does not have valid session");
+        }
+        return tkn.get().getUser();
     }
 }

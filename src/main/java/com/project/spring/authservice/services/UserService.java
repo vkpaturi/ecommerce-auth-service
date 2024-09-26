@@ -8,4 +8,5 @@ public interface UserService {
     User signUp(String email, String password, String name);
     Token login(String email, String password) throws UserNotFoundException;
     void logout(String token) throws Exception;
+    User validateToken(String token) throws Exception;
 }
