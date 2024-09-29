@@ -2,6 +2,7 @@ package com.project.spring.authservice.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToMany;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +18,7 @@ public class User extends BaseModel{
     @JsonIgnore
     private String password;
     private String name;
-    @ManyToMany
-    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
     private boolean emailVerified;
 }
